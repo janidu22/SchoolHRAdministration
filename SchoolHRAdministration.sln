@@ -5,7 +5,7 @@ VisualStudioVersion = 17.13.35828.75 d17.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolHRAdministration", "SchoolHRAdministration\SchoolHRAdministration.csproj", "{E58C40BB-E093-4FBA-A9B3-2FBF7D417B83}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRadministraionAPI", "HRadministraionAPI\HRadministraionAPI.csproj", "{B069DD16-83B0-41E7-A544-49F2987EBC88}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRAdminstrationAPI", "HRadministraionAPI\HRAdminstrationAPI.csproj", "{B069DD16-83B0-41E7-A544-49F2987EBC88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
