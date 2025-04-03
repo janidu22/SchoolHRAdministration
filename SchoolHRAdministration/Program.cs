@@ -1,9 +1,19 @@
 ﻿using HRAdministrationAPI;
 using HRAdminstrationAPI;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 
 namespace SchoolHRAdministration
 {
+    public enum EmployeeType
+    {
+        Teacher,
+        HeadOfDepartment,
+        DeputyHeadMaster,
+        HeadMaster
+
+    }
+
     internal class Program
     {
         static void Main(string[] args)
@@ -12,85 +22,23 @@ namespace SchoolHRAdministration
             List<IEmployee> employees = new List<IEmployee>();
             
             SeedData(employees);
-            foreach (var employee in employees)
-            {
-              totalSalary += employee.Salary;
-            }
-
-            Console.WriteLine($"Total Anual Salary: ${totalSalary}");
+            Console.WriteLine($"Total Anual Salary: ${employees.Sum(emp => emp.Salary)}");
             Console.ReadLine();
         }
         
         public static void SeedData(List<IEmployee> employees)
         {
-            IEmployee teacher1 = new Teacher
-            {
-                Id = 1,
-                FirstName = "john",
-                LastName = "smith",
-                Salary = 40000
-            };
-
-            employees.Add(teacher1);
-
-            IEmployee teacher2 = new Teacher
-            {
-                Id = 2,
-                FirstName = "jenny",
-                LastName = "will",
-                Salary = 45000
-            };
-            employees.Add(teacher2);
-
-            IEmployee teacher3 = new Teacher
-            {
-                Id = 3,
-                FirstName = "Kendal",
-                LastName = "jim",
-                Salary = 50000
-            };
-
-            employees.Add(teacher3);
-
-
-            IEmployee HeadOfDepartment1 = new HeadOfDepartment
-            {
-                Id = 4,
-                FirstName = "demian",
-                LastName = "williams",
-                Salary = 65000
-            };
-            employees.Add(HeadOfDepartment1);
-
-            IEmployee HeadOfDepartment2 = new HeadOfDepartment
-            {
-                Id = 5,
-                FirstName = "Kiara",
-                LastName = "jim",
-                Salary = 750000
-            };
-            employees.Add(HeadOfDepartment2);
-
-            IEmployee DeputyHeadMaster = new DeputyHeadMaster
-            {
-                Id = 6,
-                FirstName = "kobby",
-                LastName = "blake",
-                Salary = 87000
-            };
-
+            IEmployee teacher = EmployeeFactory.getEmployeeInstance(EmployeeType.Teacher,1,"janidu", "yapa",20000M);
+            employees.Add(teacher);
+           
+            IEmployee HeadOfDepartment = EmployeeFactory.getEmployeeInstance(EmployeeType.Teacher, 2, "Kanidu", "yapa", 30000M);
+            employees.Add(HeadOfDepartment);
+           
+            IEmployee DeputyHeadMaster = EmployeeFactory.getEmployeeInstance(EmployeeType.Teacher, 3, "Kanidu", "yapa", 40000M);
             employees.Add(DeputyHeadMaster);
-
-            IEmployee HeadMaster = new HeadMaster
-            {
-                Id = 6,
-                FirstName = "aimie",
-                LastName = "patrick",
-                Salary = 87000
-            };
-
+           
+            IEmployee HeadMaster = EmployeeFactory.getEmployeeInstance(EmployeeType.Teacher, 4, "Navidu", "yapa", 60000M);
             employees.Add(HeadMaster);
-
         }
     }
 
@@ -124,5 +72,48 @@ namespace SchoolHRAdministration
             get => base.Salary + (base.Salary * 0.06M);
         }
     }
+
+
+
+    public static class EmployeeFactory
+    {
+        public static IEmployee getEmployeeInstance(EmployeeType employeeType, int id, string firstname, string lastname, decimal salary)
+        {
+            IEmployee employee = null;
+
+            switch (employeeType) 
+            {
+                case EmployeeType.Teacher:
+                     employee = FactoryPatterns<IEmployee,Teacher>.GetInstance();
+                    break;
+                case EmployeeType.HeadOfDepartment:
+                    employee = FactoryPatterns<IEmployee, HeadOfDepartment>.GetInstance();
+                    break;
+                case EmployeeType.DeputyHeadMaster:
+                    employee = FactoryPatterns<IEmployee, DeputyHeadMaster>.GetInstance();
+                    break;
+                case EmployeeType.HeadMaster:
+                    employee = FactoryPatterns<IEmployee, HeadMaster>.GetInstance();
+                    break;
+                default:
+                    break;
+
+            }
+            if(employee != null)
+            {
+                employee.Id = id;
+                employee.FirstName = firstname;
+                employee.LastName = lastname;
+                employee.Salary = salary;
+            }
+            else
+            {
+                throw new NullReferenceException();
+            }
+            return employee;
+        }
+    }
+
+
 
 }
